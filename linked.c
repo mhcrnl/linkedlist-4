@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct _node{
 	int value;
+	char nume[20];
 	struct _node* next;
 }NODE;
 
@@ -11,7 +13,7 @@ NODE* tail;//마지막 노드, NULL아님
 NODE* prevNode;
 
 void init();
-void push(NODE* prev, int value);
+void push(NODE* prev, int value, char nume[]);
 void pop(NODE* target);
 NODE* node_search_target(int value);
 void destroy();
@@ -24,15 +26,19 @@ void init(){
 	head = (NODE*)malloc(sizeof(NODE));
 	head->next = NULL;
 	head->value = 0;
+	strcpy(head->nume, "");
+
 	tail = head;
 	return ;
 }
 
-void push(NODE* prev, int value){
+void push(NODE* prev, int value, char nume[]){
 	NODE* temp;
-	
+
 	temp = (NODE*)malloc(sizeof(NODE));
 	temp->value = value;
+	strcpy(temp->nume, nume);
+
 	if(prev->next == NULL){
 		tail = temp;
 		temp->next = NULL;
@@ -46,7 +52,7 @@ void push(NODE* prev, int value){
 }
 
 void pop(NODE* target){
-	
+
 	if(target->next != NULL){
 		prevNode->next = target->next;
 	}
@@ -78,7 +84,7 @@ void node_all_print(){
 		if(temp->next == NULL) return ;
 		printf("->");
 		temp = temp->next;
-		printf("%d", temp->value);
+		printf("%d %s", temp->value, temp->nume);
 	}
 }
 
@@ -101,7 +107,7 @@ int main(){
 	testint = 1;
 	head = tail = prevNode = NULL;
 	select = 0;
-	while(1){		
+	while(1){
 		printf("1. init\n2. push\n3. push(end)\n4. pop\n5. destroy\n");
 		scanf("%d",&select);
 		switch(select){
@@ -120,13 +126,13 @@ int main(){
 			}
 			printf("input push value: ");
 			scanf("%d", &value);
-			push(tempNode,value);
+			push(tempNode,value,"Vasile");
 			break;
 		case 3:
 			if(testint == 1) break;
 			printf("input push value: ");
 			scanf("%d", &value);
-			push(tail, value);
+			push(tail, value, "radu");
 			break;
 		case 4:
 			if(testint == 1) break;
@@ -139,7 +145,7 @@ int main(){
 			else{
 				pop(tempNode);
 			}
-			   
+
 			break;
 		case 5:
 			if(head != NULL) destroy(head);
@@ -154,7 +160,7 @@ int main(){
 			printf("list must be initialized\n");
 		else
 			node_all_print();
-		
+
 		printf("\n\n");
 	}
 
